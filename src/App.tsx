@@ -4,7 +4,7 @@ import HistoryList from "./components/HistoryList";
 import { useChat } from "./hooks/useChat";
 
 function App() {
-  const { sendPrompt, history, clearHistory } = useChat();
+  const { loading, sendPrompt, history, clearHistory } = useChat();
 
   const handleSubmit = async (prompt: string) => {
     await sendPrompt(prompt);
@@ -14,7 +14,7 @@ function App() {
     <Container maxW="600px" py={10}>
       <Heading mb={6}>AI Chat App</Heading>
 
-      <PromptForm onSubmit={handleSubmit} />
+      <PromptForm onSubmit={handleSubmit} disabled={loading} />
 
       {history.length ? (
         <Button mt={6} colorScheme="red" onClick={clearHistory}>
