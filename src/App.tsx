@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, Container, Heading, Button } from "@chakra-ui/react";
+import PromptForm from "./components/PromptForm";
+import HistoryList from "./components/HistoryList";
+import { useChat } from "./hooks/useChat";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { sendPrompt, history, clearHistory } = useChat();
+
+  const handleSubmit = async (prompt: string) => {
+    await sendPrompt(prompt);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Container maxW="600px" py={10}>
+      <Heading mb={6}>AI Chat App</Heading>
+
+      <PromptForm onSubmit={handleSubmit} />
+
+      {history.length ? (
+        <Button mt={6} colorScheme="red" onClick={clearHistory}>
+          Clear History
+        </Button>
+      ) : (
+        <></>
+      )}
+
+      <Box mt={8}>
+        <HistoryList items={history} />
+      </Box>
+    </Container>
+  );
 }
 
-export default App
+export default App;
